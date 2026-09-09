@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusinessPulse AI | Proactive Enterprise Resilience & Risk Intelligence</title>
+  <style>
+    :root {
+      --navy-dark: #0b1f3a;
+      --navy-light: #162f56;
+      --accent-blue: #155eef;
+      --accent-blue-hover: #1049b7;
+      --critical-red: #e11d48;
+      --critical-bg: #fff1f2;
+      --warning-orange: #ea580c;
+      --warning-bg: #fff7ed;
+      --medium-blue: #2563eb;
+      --medium-bg: #eff6ff;
+      --success-green: #16a34a;
+      --success-bg: #f0fdf4;
+      --bg-page: #f4f6fb;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg-page); color: var(--text-main); font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.5; }
+    
+    header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%); color: #fff; padding: 22px max(5vw, 24px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .header-content { max-width: 1320px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+    header p { color: #94a3b8; font-size: 13.5px; margin-top: 3px; }
+    .status-pill { background: rgba(34, 197, 94, 0.18); border: 1px solid rgba(34, 197, 94, 0.4); color: #4ade80; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 3px rgba(34,197,94,0.3); animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34,197,94,0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34,197,94,0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+
+    .wrap { max-width: 1320px; margin: 0 auto; padding: 24px; }
+    
+    .toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 22px; flex-wrap: wrap; }
+    button { border: 0; border-radius: 8px; background: var(--accent-blue); color: #fff; font-weight: 600; padding: 10px 18px; font-size: 13.5px; cursor: pointer; transition: all .15s ease; display: inline-flex; align-items: center; gap: 6px; }
+    button:hover { background: var(--accent-blue-hover); transform: translateY(-1px); }
+    button.alt { background: #fff; color: var(--accent-blue); border: 1px solid #c7d7fe; }
+    button.alt:hover { background: #eff4ff; }
+    button.sec { background: #0f766e; }
+    button.sec:hover { background: #115e59; }
+    button.sm { padding: 5px 10px; font-size: 11.5px; border-radius: 6px; }
+    .toolbar-note { color: var(--text-muted); font-size: 13px; margin-left: auto; }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+    .metric { background: #fff; border: 1px solid var(--card-border); border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(16,24,40,0.05); }
+    .metric small { display: block; color: var(--text-muted); font-size: 11.5px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .metric b { font-size: 27px; color: var(--text-main); font-weight: 800; }
+    .metric.danger { border-left: 4px solid var(--critical-red); }
+    .metric.warning { border-left: 4px solid var(--warning-orange); }
+    .metric.primary { border-left: 4px solid var(--accent-blue); }
+    .metric.success { border-left: 4px solid var(--success-green); }
+
+    .card { background: #fff; border: 1px solid var(--card-border); border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(16,24,40,0.05); margin-bottom: 22px; }
+    .card h2 { font-size: 16.5px; font-weight: 700; color: var(--text-main); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Early Warning Radar */
+    .radar-card { background: linear-gradient(135deg, #fff9f6 0%, #fff 100%); border: 1.5px solid #fed7aa; }
+    .warning-item { background: #fff; border: 1px solid #fed7aa; border-radius: 10px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 4px rgba(234,88,12,0.04); }
+    .warning-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+    .prob-badge { background: #ea580c; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
+    .warning-title { font-size: 15px; font-weight: 700; color: #9a3412; }
+    .indicators-box { background: #fff7ed; border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #7c2d12; margin: 10px 0; border-left: 3px solid #f97316; }
+    .readiness-box { font-size: 13px; font-weight: 600; color: #0284c7; }
+
+    /* Layout Grid */
+    .grid-main { display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px; }
+    
+    /* Tasks */
+    .task-item { border: 1px solid var(--card-border); border-radius: 9px; padding: 14px; margin-bottom: 12px; background: #fafbfc; }
+    .task-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .dept-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: #e0e7ff; color: #3730a3; }
+    .sla-tag { font-size: 11px; font-weight: 600; color: #dc2626; background: #fee2e2; padding: 2px 7px; border-radius: 12px; }
+    .task-summary { font-size: 13px; color: var(--text-main); font-weight: 500; margin: 6px 0; }
+    .task-escalation { font-size: 11.5px; color: #6b7280; font-style: italic; }
+    .task-actions { display: flex; gap: 6px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+    .status-btn { border: 1px solid #cbd5e1; background: #fff; font-size: 11px; padding: 4px 9px; border-radius: 5px; cursor: pointer; color: #475569; font-weight: 600; }
+    .status-btn.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+    /* Contingency Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+    th { background: #f1f5f9; padding: 9px 12px; font-weight: 700; color: #475569; border-bottom: 1px solid #e2e8f0; }
+    td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+    .badge-pill { padding: 3px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 700; display: inline-block; }
+    .badge-immediate { background: #dcfce7; color: #15803d; }
+    .badge-fast { background: #dbeafe; color: #1e40af; }
+    .badge-med { background: #ffedd5; color: #9a3412; }
+    .badge-low { background: #dcfce7; color: #15803d; }
+    .badge-approved { background: #bbf7d0; color: #166534; font-weight: 700; }
+    .badge-proposed { background: #f1f5f9; color: #475569; }
+
+    /* Threat Events */
+    .event { border-left: 4px solid #f0a020; padding: 14px 16px; margin: 12px 0; background: #f8fafc; border-radius: 0 8px 8px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .event.Critical { border-color: var(--critical-red); background: var(--critical-bg); }
+    .event.High { border-color: var(--warning-orange); background: var(--warning-bg); }
+    .event.Medium { border-color: var(--medium-blue); background: var(--medium-bg); }
+    .event h3 { font-size: 14.5px; margin: 0 0 6px; color: var(--text-main); font-weight: 700; }
+    .event p { font-size: 12.5px; line-height: 1.5; margin: 5px 0; color: #334155; }
+    .tag { font-size: 11px; font-weight: 700; border-radius: 16px; padding: 3px 9px; background: #e2e8f0; color: #334155; float: right; }
+    .event.Critical .tag { background: #ffe4e6; color: #be123c; }
+    .event.High .tag { background: #ffedd5; color: #c2410c; }
+    .event.Medium .tag { background: #dbeafe; color: #1d4ed8; }
+    .action { color: var(--accent-blue); font-weight: 600; font-size: 12.5px; }
+    .source-bar { display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; font-size: 11.5px; }
+    .source-link { color: #0284c7; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+    .source-link:hover { text-decoration: underline; color: #0369a1; }
+    .source-tag { color: var(--text-muted); font-weight: 500; }
+
+    /* Form */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-family: inherit; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(21,94,239,0.15); }
+
+    @media(max-width: 900px) {
+      .metrics, .grid-main, .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div>
+      <h1>BusinessPulse AI</h1>
+      <p>Proactive Enterprise Risk Intelligence & Cross-Department Resilience Platform</p>
+    </div>
+    <div class="status-pill">
+      <span class="pulse-dot"></span> Exasol & Gemini Engine Active • Target: Tesla Inc.
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="toolbar">
+    <button onclick="resetDemo()">⚡ Run Multi-Signal Demo</button>
+    <button class="alt" onclick="refresh()">🔄 Refresh Dashboard</button>
+    <button class="sec" onclick="toggleForm()">➕ Analyze Live News Article</button>
+    <span class="toolbar-note">Predictive 7-Day Horizon • Department Action Routing</span>
+  </div>
+
+  <!-- Live Article Form -->
+  <div id="inputFormCard" class="card" style="display:none; border:1.5px solid #c7d7fe; background:#fbfdff;">
+    <h2>Analyze Live News Article <span style="font-size:11px;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;">Gemini 2.0 Flash</span></h2>
+    <form id="articleForm" onsubmit="submitArticle(event)">
+      <div class="form-group">
+        <label for="artTitle">Article Headline / Title *</label>
+        <input id="artTitle" required placeholder="e.g. Typhoon warnings threaten northern Taiwan semiconductor facilities" minlength="5" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="artSource">News Source Name (Optional)</label>
+          <input id="artSource" placeholder="e.g. Bloomberg, Reuters, WSJ" />
+        </div>
+        <div class="form-group">
+          <label for="artUrl">Source Article URL (Optional)</label>
+          <input id="artUrl" type="url" placeholder="e.g. https://www.bloomberg.com/news/articles/..." />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="artContent">Article Content / Key Summary *</label>
+        <textarea id="artContent" rows="3" required placeholder="Paste news content here..." minlength="20"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button type="submit" id="submitBtn">Analyze & Route Threat</button>
+        <button type="button" class="alt" onclick="toggleForm()">Cancel</button>
+        <span id="formStatus" style="font-size:13px;color:#64748b;"></span>
+      </div>
+    </form>
+  </div>
+
+  <!-- Top Executive Metric KPI Cards -->
+  <section class="metrics" id="metrics"></section>
+
+  <!-- 🚨 Section 1: Predictive Early Warning Radar -->
+  <section class="card radar-card" id="radarSection">
+    <h2>🚨 7-Day Predictive Early-Warning Radar <small style="font-size:12px;font-weight:600;color:#ea580c;">Leading Indicators & Signal Clustering</small></h2>
+    <div id="earlyWarningsContainer">Loading early warnings...</div>
+  </section>
+
+  <!-- Two-Column Operational Grid -->
+  <div class="grid-main">
+    <!-- Left Column: Tasks, Contingencies, Signals -->
+    <div>
+      <!-- 🏢 Department Action Routing Hub -->
+      <section class="card">
+        <h2>🏢 Department Action Routing Hub <small style="font-size:12px;font-weight:600;color:var(--accent-blue);">SLA & Task Assignment</small></h2>
+        <div id="tasksContainer">Loading department tasks...</div>
+      </section>
+
+      <!-- 🛠️ Contingency Strategy Matrix -->
+      <section class="card">
+        <h2>🛠️ Contingency Recommendation Matrix <small style="font-size:12px;font-weight:600;color:#0f766e;">Ranked Immediate & Alternate Options</small></h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Strategy / Action</th>
+                <th>Dept</th>
+                <th>Speed</th>
+                <th>Cost</th>
+                <th>Business Benefit</th>
+                <th>Approval Status</th>
+              </tr>
+            </thead>
+            <tbody id="contingencyTbody">
+              <tr><td colspan="7" style="text-align:center;color:#64748b;">Loading contingency strategies...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Ingested Risk Events Stream -->
+      <section class="card">
+        <h2>📰 Ingested Threat Signals & Impact Chains <small style="font-size:12px;font-weight:600;color:#64748b;">Normalized Events</small></h2>
+        <div id="eventsContainer">Loading events...</div>
+      </section>
+    </div>
+
+    <!-- Right Column: Briefing & Monitored Exposures -->
+    <div>
+      <section class="card" style="background:#f8fafc;">
+        <h2>📑 Executive Resilience Briefing</h2>
+        <div id="briefingContainer" style="font-size:13px;line-height:1.6;color:#334155;">Loading briefing...</div>
+      </section>
+
+      <section class="card">
+        <h2>🎯 Monitored Tesla Exposure Baseline</h2>
+        <div style="font-size:12px;color:#475569;">
+          <div style="padding:8px 0;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;">
+            <b>Taiwan Chip Partner (Supplier)</b> <span>90% Dep • 14d Inv</span>
+          </div>
+          <div style="padding:8px 0;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;">
+            <b>China Battery Cell Partner (Supplier)</b> <span>95% Dep • 21d Inv</span>
+          </div>
+          <div style="padding:8px 0;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;">
+            <b>Model Y (Product Line)</b> <span>85% Dep • 40% Rev</span>
+          </div>
+          <div style="padding:8px 0;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;">
+            <b>BYD (Competitor)</b> <span>70% Dep • China Market</span>
+          </div>
+          <div style="padding:8px 0;display:flex;justify-content:space-between;">
+            <b>US EV Incentives (Policy)</b> <span>80% Dep • US Market</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script>
+const money = n => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n||0);
+
+function toggleForm(){
+  const f = document.getElementById('inputFormCard');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+async function submitArticle(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('formStatus');
+  const title = document.getElementById('artTitle').value.trim();
+  const content = document.getElementById('artContent').value.trim();
+  const source_name = document.getElementById('artSource').value.trim() || 'Live News Feed';
+  const source_url = document.getElementById('artUrl').value.trim() || '';
+  btn.disabled = true; btn.innerText = "Analyzing & Routing..."; status.innerText = "";
+  try {
+    const res = await fetch('/api/events/analyze', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({title, content, source_name, source_url})
+    });
+    if(!res.ok) throw new Error('Analysis failed with status ' + res.status);
+    document.getElementById('artTitle').value = '';
+    document.getElementById('artContent').value = '';
+    document.getElementById('artSource').value = '';
+    document.getElementById('artUrl').value = '';
+    toggleForm();
+    await refresh();
+  } catch(err) {
+    status.innerText = "Error: " + err.message;
+  } finally {
+    btn.disabled = false; btn.innerText = "Analyze & Route Threat";
+  }
+}
+
+async function updateTask(taskId, newStatus){
+  await fetch(`/api/tasks/${taskId}/status`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({status: newStatus})
+  });
+  await refresh();
+}
+
+async function approveContingency(optId){
+  await fetch(`/api/contingencies/${optId}/approve`, {method: 'POST'});
+  await refresh();
+}
+
+async function resetDemo(){
+  await fetch('/api/demo/reset', {method: 'POST'});
+  await refresh();
+}
+
+async function refresh(){
+  const d = await fetch('/api/dashboard').then(r=>r.json());
+  const m = d.metrics;
+  
+  // 1. Metrics
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric ${m.early_warnings_count>0?'danger':''}">
+      <small>🚨 7-Day Early Warnings</small>
+      <b style="color:${m.early_warnings_count>0?'var(--critical-red)':'inherit'}">${m.early_warnings_count} Active</b>
+    </div>
+    <div class="metric ${m.critical>0?'danger':(m.high>0?'warning':'')}">
+      <small>⚡ Critical & High Threats</small>
+      <b style="color:${m.critical>0?'var(--critical-red)':'#ea580c'}">${m.critical + m.high}</b>
+    </div>
+    <div class="metric primary">
+      <small>🏢 Pending Dept Actions</small>
+      <b>${m.pending_tasks_count} Tasks</b>
+    </div>
+    <div class="metric success">
+      <small>💰 Total Exposure at Risk</small>
+      <b>${money(m.estimated_revenue_at_risk_usd)}</b>
+    </div>
+  `;
+
+  // 2. Early Warnings Radar
+  const radar = document.getElementById('earlyWarningsContainer');
+  if(d.early_warnings && d.early_warnings.length > 0){
+    radar.innerHTML = d.early_warnings.map(w => `
+      <div class="warning-item">
+        <div class="warning-header">
+          <span class="warning-title">🚨 Target: ${w.target_entity} (${w.region}) — ${w.category.toUpperCase()}</span>
+          <span class="prob-badge">${w.probability_7d}% Disruption Probability (${w.predicted_timeframe})</span>
+        </div>
+        <div class="indicators-box">
+          <b>Leading Signal Cluster (${w.signal_count} signals detected):</b><br>
+          ${w.leading_indicators}
+        </div>
+        <div class="readiness-box">
+          ⚡ ${w.readiness_action}
+        </div>
+      </div>
+    `).join('');
+  } else {
+    radar.innerHTML = '<p style="font-size:13px;color:#64748b;">No active 7-day early warning clusters detected. Run multi-signal demo to simulate.</p>';
+  }
+
+  // 3. Department Tasks
+  const tasksContainer = document.getElementById('tasksContainer');
+  if(d.tasks && d.tasks.length > 0){
+    tasksContainer.innerHTML = d.tasks.map(t => `
+      <div class="task-item">
+        <div class="task-top">
+          <span class="dept-badge">${t.department}</span>
+          <span class="sla-tag">Due: ${t.due_date}</span>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-top:4px;">👤 Role: ${t.assigned_role}</div>
+        <p class="task-summary">${t.action_summary}</p>
+        <p class="task-escalation">⚠️ ${t.escalation_path}</p>
+        <div class="task-actions">
+          <span style="font-size:11px;font-weight:600;color:#64748b;">Status:</span>
+          ${['Assigned', 'In Progress', 'Contingency Activated', 'Resolved'].map(st => `
+            <button class="status-btn ${t.status === st ? 'active' : ''}" onclick="updateTask(${t.task_id}, '${st}')">${st}</button>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  } else {
+    tasksContainer.innerHTML = '<p style="font-size:13px;color:#64748b;">No department tasks assigned yet.</p>';
+  }
+
+  // 4. Contingency Options Table
+  const tbody = document.getElementById('contingencyTbody');
+  if(d.contingencies && d.contingencies.length > 0){
+    tbody.innerHTML = d.contingencies.map(c => `
+      <tr>
+        <td><b>#${c.feasibility_rank}</b></td>
+        <td><b>${c.option_title}</b></td>
+        <td><span class="dept-badge">${c.department}</span></td>
+        <td><span class="badge-pill badge-${c.speed.toLowerCase()}">${c.speed}</span></td>
+        <td><span class="badge-pill badge-${c.cost.toLowerCase()}">${c.cost}</span></td>
+        <td style="color:#334155;">${c.business_benefit}</td>
+        <td>
+          ${c.approval_status === 'Approved'
+            ? '<span class="badge-pill badge-approved">✓ Approved</span>'
+            : `<button class="sm alt" onclick="approveContingency(${c.option_id})">Approve Strategy</button>`}
+        </td>
+      </tr>
+    `).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#64748b;">No contingency options generated yet.</td></tr>';
+  }
+
+  // 5. Ingested Events
+  const eventsContainer = document.getElementById('eventsContainer');
+  if(d.events && d.events.length > 0){
+    eventsContainer.innerHTML = d.events.map(e => {
+      const sourceLink = e.source_url
+        ? `<a href="${e.source_url}" target="_blank" rel="noopener noreferrer" class="source-link">🔗 ${e.source_name || 'Source Article'} ↗</a>`
+        : (e.source_name ? `<span class="source-tag">📰 ${e.source_name}</span>` : '');
+      return `
+        <article class="event ${e.priority_label}">
+          <span class="tag">${e.priority_label} · ${e.priority_score}</span>
+          <h3>${e.title}</h3>
+          <p>${e.summary}</p>
+          <p><b>Estimated Financial Exposure:</b> ${money(e.revenue_at_risk_usd)}</p>
+          <p class="action">Recommended Action: ${e.recommended_action}</p>
+          ${sourceLink ? `<div class="source-bar"><span>Source:</span> ${sourceLink}</div>` : ''}
+        </article>
+      `;
+    }).join('');
+  } else {
+    eventsContainer.innerHTML = '<p style="font-size:13px;color:#64748b;">No events loaded yet.</p>';
+  }
+
+  // 6. Briefing
+  const b = await fetch('/api/briefing').then(r=>r.json());
+  document.getElementById('briefingContainer').innerHTML = `
+    <div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
+      <span style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;">Rollup Generated At:</span>
+      <span style="font-size:11.5px;color:#0f172a;font-weight:600;">${new Date(b.generated_at).toLocaleString()}</span>
+    </div>
+    <p>${b.summary}</p>
+  `;
+}
+
+refresh();
+</script>
+</body>
+</html>

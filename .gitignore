@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 data/businesspulse.db
+.venv/
+venv/

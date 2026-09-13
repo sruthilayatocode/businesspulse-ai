@@ -183,3 +183,7 @@ businesspulse-ai/
 - **Official PRD Document**: [`outputs/BusinessPulse_AI_PRD.docx`](outputs/BusinessPulse_AI_PRD.docx) (Complete 14-section architectural design).
 - **Target Platform**: Exasol Analytics Database & Personal Edition.
 - **Hackathon Track**: AI & Data-Powered Solutions / Enterprise Early Warning Intelligence.
+
+## Demo Video
+
+[Watch the BusinessPulse AI Demo](https://youtu.be/e7okJuQdMwY)

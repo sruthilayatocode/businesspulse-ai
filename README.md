@@ -186,4 +186,4 @@ businesspulse-ai/
 
 ## Demo Video
 
-[Watch the BusinessPulse AI Demo](https://youtu.be/e7okJuQdMwY)
+[Watch the BusinessPulse AI Demo](https://youtu.be/QZ3rVuQhLNU)
